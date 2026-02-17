@@ -1,3 +1,8 @@
+export type TodoStore = {
+  todos: Todo[];
+  idCounter: number;
+};
+
 export type Todo = {
   id: number;
   title: string;

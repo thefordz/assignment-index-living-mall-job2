@@ -1,24 +1,34 @@
-import { CreateTodoValues, Todo, UpdateTodoValues } from "@/lib/types";
+import { CreateTodoValues, TodoStore, UpdateTodoValues } from "@/lib/types";
 
-const todos: Todo[] = [];
-let idCounter = 1;
+const globalStore = globalThis as unknown as {
+  todoStore: TodoStore;
+};
+
+if (!globalStore.todoStore) {
+  globalStore.todoStore = {
+    todos: [],
+    idCounter: 1,
+  };
+}
+
+const store = globalStore.todoStore;
 
 export function getTodos() {
-  return todos;
+  return store.todos;
 }
 
 export function getTodoById(id: number) {
-  return todos.find((todo) => todo.id === id);
+  return store.todos.find((todo) => todo.id === id);
 }
 
 export function createTodo(values: CreateTodoValues) {
   const newTodo = {
-    id: idCounter++,
+    id: store.idCounter++,
     title: values.title,
     completed: false,
   };
 
-  todos.push(newTodo);
+  store.todos.push(newTodo);
   return newTodo;
 }
 
@@ -40,11 +50,11 @@ export function updateTodo(id: number, values: UpdateTodoValues) {
 }
 
 export function deleteTodo(id: number) {
-  const index = todos.findIndex((todo) => todo.id === id);
+  const index = store.todos.findIndex((todo) => todo.id === id);
   if (index === -1) {
     return false;
   }
 
-  todos.splice(index, 1);
+  store.todos.splice(index, 1);
   return true;
 }
