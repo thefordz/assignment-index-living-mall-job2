@@ -55,6 +55,7 @@ export function deleteTodo(id: number) {
     return false;
   }
 
+  const deleted = store.todos[index];
   store.todos.splice(index, 1);
-  return true;
+  return deleted;
 }
