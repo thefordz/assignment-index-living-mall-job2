@@ -1,9 +1,14 @@
+"use server";
 import { ApiSuccess } from "@/lib/api-response";
 import { BASE_TODOS_API_URL } from "./base-api";
 import { Todo } from "@/lib/types";
+import { API_KEY } from "@/lib/constants";
 
 export async function fetchTodos(): Promise<ApiSuccess<Todo[]> | null> {
   const res = await fetch(`${BASE_TODOS_API_URL}`, {
+    headers: {
+      "x-api-key": API_KEY,
+    },
     cache: "no-store",
   });
   const data: ApiSuccess<Todo[]> = await res.json();

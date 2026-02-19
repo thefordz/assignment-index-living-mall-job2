@@ -1,6 +1,8 @@
+"use server";
 import { Todo, UpdateTodoValues } from "@/lib/types";
 import { BASE_TODOS_API_URL } from "./base-api";
 import { ApiSuccess } from "@/lib/api-response";
+import { API_KEY } from "@/lib/constants";
 
 export async function updateTodo(
   todoId: number,
@@ -8,7 +10,10 @@ export async function updateTodo(
 ): Promise<ApiSuccess<Todo>> {
   const res = await fetch(`${BASE_TODOS_API_URL}/${todoId}`, {
     method: "PUT",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      "x-api-key": API_KEY,
+      "Content-Type": "application/json",
+    },
     body: JSON.stringify(values),
   });
 
