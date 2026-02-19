@@ -1,9 +1,13 @@
 "use client";
 
-export default function ErrorPage() {
+interface ErrorPageProps {
+  error: Error;
+}
+
+export default function ErrorPage({ error }: ErrorPageProps) {
   return (
     <div className="flex flex-1 items-center justify-center h-full w-full">
-      <div className="flex gap-3 items-center">Something went wrong</div>
+      <div className="flex gap-3 items-center">{error.message}</div>
     </div>
   );
 }
