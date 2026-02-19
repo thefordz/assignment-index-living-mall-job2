@@ -41,7 +41,6 @@ export async function PUT(
     }
 
     const body = (await request.json()) as UpdateTodoValues;
-    console.log("PUT DATA", body);
 
     const updated = updateTodo(numberId, body);
 
