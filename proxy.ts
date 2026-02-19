@@ -6,7 +6,9 @@ export function proxy(request: NextRequest) {
   if (request.nextUrl.pathname.startsWith("/api")) {
     const ip =
       request.headers.get("x-forwarded-for")?.split(",")[0] || "unknown";
-    const result = checkRateLimit(ip);
+    const ipKey = `${ip}-${request.method}`;
+    const result = checkRateLimit(ipKey, request.method);
+
     if (!result.allowed) {
       const seconds = Math.ceil(result.reset / 1000);
 

@@ -1,8 +1,21 @@
-import { LIMIT_REQUEST, LIMIT_TIME } from "./constants";
+import {
+  DEFAULT_LIMIT_REQUEST,
+  LIMIT_REQUEST_CONFIG,
+  LIMIT_TIME,
+} from "./constants";
 
 const rateMap = new Map<string, { count: number; start: number }>();
+type RateLimitResult = {
+  allowed: boolean;
+  remaining: number;
+  reset: number;
+};
 
-export function checkRateLimit(ip: string) {
+export function checkRateLimit(ip: string, method: string): RateLimitResult {
+  const limit =
+    LIMIT_REQUEST_CONFIG[method as keyof typeof LIMIT_REQUEST_CONFIG] ??
+    DEFAULT_LIMIT_REQUEST;
+
   const now = Date.now();
   const record = rateMap.get(ip);
 
@@ -10,7 +23,7 @@ export function checkRateLimit(ip: string) {
     rateMap.set(ip, { count: 1, start: now });
     return {
       allowed: true,
-      remaining: LIMIT_REQUEST - 1,
+      remaining: limit - 1,
       reset: LIMIT_TIME,
     };
   }
@@ -19,12 +32,12 @@ export function checkRateLimit(ip: string) {
     rateMap.set(ip, { count: 1, start: now });
     return {
       allowed: true,
-      remaining: LIMIT_REQUEST - 1,
+      remaining: limit - 1,
       reset: LIMIT_TIME,
     };
   }
 
-  if (record.count >= LIMIT_REQUEST) {
+  if (record.count >= limit) {
     const retryAfter = LIMIT_TIME - (now - record.start);
     return {
       allowed: false,
@@ -36,7 +49,7 @@ export function checkRateLimit(ip: string) {
   record.count++;
   return {
     allowed: true,
-    remaining: LIMIT_REQUEST - record.count,
+    remaining: limit - record.count,
     reset: LIMIT_TIME - (now - record.start),
   };
 }
