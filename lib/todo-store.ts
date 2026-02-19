@@ -28,7 +28,7 @@ export function createTodo(values: CreateTodoValues) {
     completed: false,
   };
 
-  store.todos.push(newTodo);
+  store.todos.unshift(newTodo);
   return newTodo;
 }
 

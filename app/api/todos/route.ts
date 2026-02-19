@@ -5,7 +5,7 @@ import { CreateTodoValues } from "@/lib/types";
 export async function GET() {
   try {
     const todos = getTodos();
-    return apiResponse({ data: todos, status: 201 });
+    return apiResponse({ data: todos, status: 200 });
   } catch (error) {
     console.error("[GET /todos error]:", error);
     return internalServerError();

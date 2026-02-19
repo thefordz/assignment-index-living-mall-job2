@@ -1,9 +1,9 @@
-type ApiSuccess<T> = {
+export type ApiSuccess<T> = {
   message?: string;
   data: T;
 };
 
-type ApiError = {
+export type ApiError = {
   message?: string;
 };
 
